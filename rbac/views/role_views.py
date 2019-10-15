@@ -12,7 +12,8 @@ from django.views import View
 from django.http import JsonResponse
 import json
 from django.db.models import F
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -46,7 +47,7 @@ class CreateRole(View):
                 comment=request.POST.get('comment', None),
             )
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "创建失败"})
 
         return JsonResponse({"status": True, "msg": "创建成功"})
@@ -60,7 +61,7 @@ class UpdateRole(View):
             user.comment = request.POST.get('comment')
             user.save()
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status":False,"msg":"更新失败"})
         return JsonResponse({"status":True,"msg":"更新成功"})
 
@@ -70,7 +71,7 @@ class DeleteRole(View):
         try:
             Role.objects.get(id=rid).delete()
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status":False,"msg":"删除失败"})
         return JsonResponse({"status":True,"msg":"删除成功"})
 
@@ -113,6 +114,6 @@ class UpdateRolePermissions(View):
             role = Role.objects.get(id=rid)
             role.permissions.set(eval(auth_ids))
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status":False,"msg":"更新失败"})
         return JsonResponse({"status": True, "msg": "更新成功"})

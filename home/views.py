@@ -7,9 +7,9 @@ from rbac.service.init_permission import init_permission
 from rbac.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-import numpy as np
-from utils.custom_sort import custom_sort
 import copy
+import logging
+logger = logging.getLogger(__name__)
 
 class Login(View):
     def get(self,request):

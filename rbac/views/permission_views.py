@@ -14,7 +14,8 @@ import django_filters
 from django.db.models import Q
 from rbac.models import Permission
 from rest_framework.pagination import PageNumberPagination
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -46,7 +47,7 @@ class CreatePermission(View):
                 menu_icon=request.POST.get('menu_icon', None),
             )
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "操作失败"})
 
         return JsonResponse({"status":True,"msg":"操作成功"})
@@ -66,7 +67,7 @@ class UpdatePermission(View):
             per.menu_icon = request.POST.get('menu_icon', None)
             per.save()
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "操作失败"})
 
         return JsonResponse({"status":True,"msg":"操作成功"})
@@ -76,9 +77,8 @@ class DeletePermission(View):
         pid = request.POST.get('id')
         try:
             Permission.objects.get(id=pid).delete()
-
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "操作失败"})
 
         return JsonResponse({"status":True,"msg":"操作成功"})

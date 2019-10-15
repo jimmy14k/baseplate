@@ -13,6 +13,9 @@ from django_filters.rest_framework import FilterSet
 import django_filters
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
+import logging
+logger = logging.getLogger(__name__)
+
 
 class UserFilter(FilterSet):
     q = django_filters.rest_framework.CharFilter(method='filter_q')
@@ -53,6 +56,7 @@ class UpdateUserState(View):
             user.is_active = is_active
             user.save()
         except Exception as e:
+            logger.error(str(e))
             return HttpResponse(json.dumps({"status":False,"msg":"更新失败"}))
         return HttpResponse(json.dumps({"status":True,"msg":"更新成功"}))
 
@@ -63,7 +67,7 @@ class DelUser(View):
         try:
             user = User.objects.get(id=uid).delete()
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return HttpResponse(json.dumps({"status":False,"msg":"更新失败"}))
         return HttpResponse(json.dumps({"status":True,"msg":"更新成功"}))
 
@@ -76,6 +80,7 @@ class RestUserPassword(View):
             user.password = make_password('Techfuser2019')
             user.save()
         except Exception as e:
+            logger.error(str(e))
             return HttpResponse(json.dumps({"status":False,"msg":"重置失败"}))
         return HttpResponse(json.dumps({"status":True,"msg":"重置成功,密码为:Techfuser2019"}))
 
@@ -97,7 +102,7 @@ class CreateUser(View):
                 r = Role.objects.filter(id__in=roles_ids.split(','))
                 user.roles.set(r)
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "操作失败"})
 
         return JsonResponse({"status":True,"msg":"操作成功"})
@@ -119,7 +124,7 @@ class UpdateUser(View):
                 user.roles.set(r)
             user.save()
         except Exception as e:
-            print(e)
+            logger.error(str(e))
             return JsonResponse({"status": False, "msg": "操作失败"})
 
         return JsonResponse({"status":True,"msg":"操作成功"})
