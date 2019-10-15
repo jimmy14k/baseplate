@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load rbac_filter %}
+
+{% block title %}用户管理{% endblock %}
+{% block header-css %}
+{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+
+<!-- 页面加载loading -->
+<div class="page-loading">
+    <div class="ball-loader">
+        <span></span><span></span><span></span><span></span>
+    </div>
+</div>
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label w-auto">搜索：</label>
+                        <div class="layui-input-inline mr0">
+                            <input id="edtSearchAuth" class="layui-input" type="text" placeholder="输入关键字"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="btnSearchAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                        <button id="btnAddAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                        <button id="btnExpandAuth" class="layui-btn icon-btn">全部展开</button>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="btnFoldAuth" class="layui-btn icon-btn">全部折叠</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="layui-table" id="tableAuth" lay-filter="tableAuth"></table>
+        </div>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tableBarAuth">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 表单弹窗 -->
+<script type="text/html" id="modelAuth">
+    <form id="modelAuthForm" lay-filter="modelAuthForm" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-block">
+                <select name="parent_id" lay-search>
+                    <option value="">请选择上级菜单</option>
+                    {% for i in ''|menu_choices %}
+                        <option value="{{ i.id }}">{{ i.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-block">
+                <input name="title" placeholder="请输入权限名称" type="text" class="layui-input" maxlength="50"
+                       lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限类型</label>
+            <div class="layui-input-block ">
+                <input name="per_type" type="radio" value="0" title="菜单" checked/>
+                <input name="per_type" type="radio" value="1" title="按钮"/>
+                <input name="per_type" type="radio" value="2" title="接口"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单url</label>
+            <div class="layui-input-block">
+                <input name="url" placeholder="请输入菜单url" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限标识</label>
+            <div class="layui-input-block">
+                <input name="authority" placeholder="请输入权限标识" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单图标</label>
+            <div class="layui-input-block">
+                <input name="menu_icon" placeholder="请输入菜单图标" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序号</label>
+            <div class="layui-input-block">
+                <input name="order_number" placeholder="请输入排序号" type="number" class="layui-input" min="0" max="1000"
+                       lay-verType="tips" lay-verify="required|number" required/>
+            </div>
+        </div>
+        <div class="layui-form-item text-right">
+            <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
+            <button class="layui-btn" lay-filter="modelSubmitAuth" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+
+{% endblock %}
+
+
+
+{% block footer-js %}
+<script type="text/javascript" src="/static/js/rbac/permissions.js"></script>
+{% endblock %}
+

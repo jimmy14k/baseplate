@@ -1,0 +1,139 @@
+﻿{% extends "base.html" %}
+{% load rbac_filter %}
+
+{% block title %}用户管理{% endblock %}
+{% block header-css %}
+{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+
+    <!-- 页面加载loading -->
+    <div class="page-loading">
+        <div class="ball-loader">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- 正文开始 -->
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-body table-tool-mini">
+                <div class="layui-form toolbar">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline mr0">
+                                <input name="q" class="layui-input" type="text" placeholder="用户名、姓名"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <div class="layui-input-inline mr0">
+                                <select name="department">
+                                    <option value="">选择部门</option>
+                                    {% for i in ''|dep_choices %}
+                                        <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline" style="padding-right: 110px;">
+                            <button class="layui-btn icon-btn" lay-filter="formSubSearchUser" lay-submit>
+                                <i class="layui-icon">&#xe615;</i>搜索
+                            </button>
+                            {% if 'users:create' in authoritys %}
+                                <button id="btnAddUser" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <table class="layui-table" id="tableUser" lay-filter="tableUser"></table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表格操作列 -->
+    <script type="text/html" id="tableBarUser">
+        {% if 'users:update' in authoritys %}
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+        {% endif %}
+        {% if 'users:delete' in authoritys %}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        {% endif %}
+        {% if 'users:rest-psw' in authoritys %}
+            <a class="layui-btn layui-btn-xs" lay-event="reset">重置密码</a>
+        {% endif %}
+
+
+    </script>
+    <!-- 表格状态列 -->
+    <script type="text/html" id="tableStateUser">
+        <input type="checkbox" lay-filter="ckStateUser" value="{% verbatim %}{{d.id}}{% endverbatim %}" lay-skin="switch"
+               lay-text="正常|锁定" {% verbatim %}{{d.is_active==1?'checked':''}}{% endverbatim %} />
+    </script>
+    <!-- 表单弹窗 -->
+    <script type="text/html" id="modelUser">
+        <form id="modelUserForm" lay-filter="modelUserForm" class="layui-form model-form">
+            <input name="id" type="hidden"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">账号</label>
+                <div class="layui-input-block">
+                    <input name="username" placeholder="请输入用户名" type="text" class="layui-input" maxlength="20"
+                           lay-verType="tips" lay-verify="required" required/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input name="realname" placeholder="请输入姓名" type="text" class="layui-input" maxlength="20"
+                           lay-verType="tips" lay-verify="required" required/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">部门</label>
+                <div class="layui-input-block">
+                    <select name="department">
+                        <option value="">选择部门</option>
+                        {% for i in ''|dep_choices %}
+                            <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">岗位</label>
+                <div class="layui-input-block">
+                    <select name="position" >
+                        <option value="">选择岗位</option>
+                        {% for i in ''|positions_choices %}
+                            <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block xm-select-nri">
+                    <select name="roles"  xm-select="selRoles">
+                        <option value="">请选择角色</option>
+                        {% for i in ''|roles_choices %}
+                            <option value="{{ i.id }}">{{ i.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item text-right">
+                <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
+                <button class="layui-btn" lay-filter="modelSubmitUser" lay-submit>保存</button>
+            </div>
+        </form>
+    </script>
+
+{% endblock %}
+
+
+{% block footer-js %}
+<script type="text/javascript" src="/static/js/rbac/users.js"></script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load rbac_filter %}
+
+{% block  title %}登录{% endblock %}
+{% block header-css %}
+    <link rel="stylesheet" href="/static/css/login.css?v=315">
+    <script>
+        if (window != top) {
+            top.location.replace(location.href);
+        }
+    </script>
+{% endblock %}
+
+
+
+{% block page-content %}
+    {% csrf_token %}
+
+<div class="login-wrapper">
+    <div class="login-header">
+        <img src="/static/images/logo.png"> Jimmy14k的脚手架
+    </div>
+    <div class="login-body">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <i class="layui-icon layui-icon-engine"></i>&nbsp;&nbsp;用户登录
+            </div>
+            <form class="layui-card-body layui-form layui-form-pane">
+                {% csrf_token %}
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+                    <div class="layui-input-block">
+                        <input name="username" type="text" placeholder="账号" class="layui-input"
+                               lay-verType="tips" lay-verify="required" required/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+                    <div class="layui-input-block">
+                        <input name="password" type="password" placeholder="密码" class="layui-input"
+                               lay-verType="tips" lay-verify="required" required/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <button lay-filter="login-submit" class="layui-btn layui-btn-fluid" lay-submit>登 录</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="login-footer">
+        <p>© 2019 Jimmy14k</p>
+    </div>
+</div>
+{% endblock %}
+
+{%  block footer-js %}
+
+
+<script>
+
+    layui.use(['layer', 'form'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        // 表单提交
+        form.on('submit(login-submit)', function (obj) {
+            $.ajax({
+                type: "POST",
+                url: '/login',
+                data: obj.field,
+                success: function (d) {
+                    var d = JSON.parse(d);
+                    if(d.status) {
+                        layer.msg('登录成功', {icon: 1, time: 500}, function () {
+                            location.replace('/')
+                        })
+                    }else {
+                        layer.msg(d.msg,{icon: 2,time: 1500})
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

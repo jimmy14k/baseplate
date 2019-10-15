@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block  title %}Dashboard{% endblock %}
+{% block header-css %}
+    <link rel="stylesheet" href="/static/css/home/dashboard.css"/>
+{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <!-- 快捷方式 -->
+    <div id="consoleLink" class="layui-row layui-col-space15">
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/system/user.html" ew-title="外出申请">
+                <div class="console-link-block-num">15</div>
+                <div class="console-link-block-text">外出申请</div>
+                <div class="console-link-block-band">待审批</div>
+                <img class="console-link-block-icon" src="/static/images/homepic1.png">
+            </div>
+        </div>
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/system/role.html" ew-title="请假审批">
+                <div class="console-link-block-num">13</div>
+                <div class="console-link-block-text">请假审批</div>
+                <div class="console-link-block-band">待审批</div>
+                <img class="console-link-block-icon" src="/static/images/homepic2.png">
+            </div>
+        </div>
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/system/authorities.html" ew-title="研发周报">
+                <img class="console-link-block-icon" src="/static/images/homepic3.png">
+                <div class="console-link-block-num">22</div>
+                <div class="console-link-block-text">研发周报</div>
+                <div class="console-link-block-band">去查看</div>
+            </div>
+        </div>
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/system/loginRecord.html" ew-title="研发月报">
+                <img class="console-link-block-icon" src="/static/images/homepic4.png">
+                <div class="console-link-block-num">18</div>
+                <div class="console-link-block-text">研发月报</div>
+                <div class="console-link-block-band">去查看</div>
+            </div>
+        </div>
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/plugin/basic/dialog.html" ew-title="拜访记录">
+                <img class="console-link-block-icon" src="/static/images/homepic5.png">
+                <div class="console-link-block-num">11</div>
+                <div class="console-link-block-text">拜访记录</div>
+                <div class="console-link-block-band">去查看</div>
+            </div>
+        </div>
+        <div class="layui-col-lg2 layui-col-md4 layui-col-sm4 layui-col-xs6">
+            <div class="console-link-block" ew-href="page/plugin/basic/notice.html" ew-title="项目申报">
+                <img class="console-link-block-icon" src="/static/images/homepic6.png">
+                <div class="console-link-block-num">26</div>
+                <div class="console-link-block-text">项目申报</div>
+                <div class="console-link-block-band">待审批</div>
+            </div>
+        </div>
+    </div>
+    <!-- 统计图表 -->
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md4 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">日统计</div>
+                <div class="layui-card-body">
+                    <div style="height: 300px;position: relative;">
+                        <div id="tjDivDay" style="height: 100%;"></div>
+                        <span id="btnShowDetail"
+                              style="color: #1AB4E8;font-size: 18px;position: absolute;bottom: 75px;left: 50%;transform: translateX(-50%);cursor: pointer;">
+                            签到明细<i class="layui-icon layui-icon-right" style="font-size: 16px;"></i>
+                        </span>
+                    </div>
+                    <div class="layui-row text-center">
+                        <div class="layui-col-xs6">
+                            <div id="tv1Num1" style="color: #28a6d6;font-size: 22px;">22</div>
+                            <div style="font-size: 18px;padding: 10px 0 15px 0;">未签到</div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div id="tv1Num2" style="color: #28a6d6;font-size: 22px;">38</div>
+                            <div style="font-size: 18px;padding: 10px 0 15px 0;">已签到</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">周统计</div>
+                <div class="layui-card-body">
+                    <div id="tjDivWeek" style="height: 373px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4 layui-col-sm6 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">月统计</div>
+                <div class="layui-card-body">
+                    <div id="tjDivMonth" style="height: 373px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 加载动画 -->
+<div class="page-loading">
+    <div class="ball-loader">
+        <span></span><span></span><span></span><span></span>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer-js %}
+<script src="/static/libs/echarts/echarts.min.js"></script>
+<script src="/static/libs/echarts/echartsTheme.js"></script>
+<script src="/static/js/home/dashboard.js"></script>
+{% endblock %}
