@@ -10,7 +10,7 @@ import json
 
 class RbacMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        #判断权限是否更新
+        # 判断权限是否更新
         conn = get_redis_connection()
         user_or_role_update_counter = conn.hget('user_or_role_update', 'counter')
         if not user_or_role_update_counter:
@@ -26,6 +26,7 @@ class RbacMiddleware(MiddlewareMixin):
             except Exception as e:
                 pass
 
+        # Start
         current_url = request.path_info
         valid_urls = settings.VALID_URLS
 
@@ -50,4 +51,4 @@ class RbacMiddleware(MiddlewareMixin):
                 flag = True
                 break
         if not flag:
-            return HttpResponse(json.dumps({"status":False,"msg":"没有权限"}))
+            return HttpResponse(json.dumps({"status":False,"msg":"Unauthorized"}))

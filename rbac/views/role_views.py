@@ -92,11 +92,11 @@ class GetRolePermissions(View):
                 "open": True,
             }
             if row['per_type'] == 0:
-                dic["name"] = row['title'] + ' 『 Menu』'
+                dic["name"] = row['title'] + ' 『Menu』'
             elif row['per_type'] == 1:
-                dic["name"] = row['title'] + ' 『 Button』'
+                dic["name"] = row['title'] + ' 『Button』'
             else:
-                dic["name"] = row['title'] + ' 『 Api』'
+                dic["name"] = row['title'] + ' 『Api』'
             if row['id'] in cur_role_per:
                 dic["checked"]= True
             else:

@@ -2,6 +2,7 @@ from django.urls import path
 from .views.user_views import *
 from .views.permission_views import *
 from .views.role_views import *
+from .views.others_views import *
 
 app_name = "assets"
 
@@ -29,4 +30,18 @@ urlpatterns = [
     path('delete-role',DeleteRole.as_view(),name='create-role'),                    #删除角色
     path('get-role-permissions',GetRolePermissions.as_view(),name='get-role-permissons'),            #获取角色权限
     path('update-role-permissions',UpdateRolePermissions.as_view(),name='update-role-permissions'),  #更新角色权限
+
+
+
+    path('others',OthersPage.as_view(),name='others'),                                    #基础配置页面
+
+    path('departments',DepartmentListViewSet.as_view(),name='departments'),               #部门信息接口
+    path('create-department', CreateDepartment.as_view(), name='create-department'),      #创建部门
+    path('update-department', UpdateDepartment.as_view(), name='create-department'),      #更新部门
+    path('delete-department', DeleteDepartment.as_view(), name='create-department'),      #删除部门
+
+    path('positions', PositionListViewSet.as_view(), name='positions'),                   # 岗位信息接口
+    path('create-position', CreatePosition.as_view(), name='create-position'),            # 创建岗位
+    path('update-position', UpdatePosition.as_view(), name='update-position'),            # 更新岗位
+    path('delete-position', DeletePosition.as_view(), name='delete-position'),            # 删除岗位
 ]

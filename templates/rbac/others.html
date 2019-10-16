@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}基础配置{% endblock %}
+{% block header-css %}
+{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+    <!-- 加载动画 -->
+    <div class="page-loading">
+        <div class="ball-loader">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">部门信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table" id="tableDepartment" lay-filter="tableDepartment"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">岗位信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table" id="tablePosition" lay-filter="tablePosition"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 表单弹窗 -->
+<script type="text/html" id="modelAll">
+    <form id="modelAlltForm" lay-filter="modelAlltForm" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input name="name" placeholder="请输入名称" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item text-right">
+            <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
+            <button class="layui-btn" lay-filter="modelSubmitAll" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+
+{% endblock %}
+
+{% block footer-js %}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'admin', 'zTree'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+
+        // 渲染表格- Department
+        var departmentTb = table.render({
+            height: 280,
+            elem: '#tableDepartment',
+            url: '/rbac/departments',
+            toolbar: true ,
+            defaultToolbar: ['filter',{
+                title: '添加',
+                icon: 'layui-icon-add-1',
+                layEvent: 'add',
+            }],
+            cellMinWidth: 120,    //单元格最小宽度
+            cols: [[
+                {type: 'numbers', title: '#'},
+                {field: 'name', title: '部门名称'},
+                {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+            ]]
+        });
+        // 渲染表格- Position
+        var positionTb = table.render({
+            height: 280,
+            elem: '#tablePosition',
+            url: '/rbac/positions',
+            toolbar: true ,
+            defaultToolbar: ['filter',{
+                title: '添加',
+                icon: 'layui-icon-add-1',
+                layEvent: 'add',
+            }],
+            cellMinWidth: 120,    //单元格最小宽度
+            cols: [[
+                {type: 'numbers', title: '#'},
+                {field: 'name', title: '岗位名称'},
+                {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+            ]]
+        });
+
+
+
+        // layui 工具条点击事件 - 添加部门
+        table.on('toolbar(tableDepartment)',function (obj) {
+           var layEvent = obj.event;
+           if (layEvent === 'add') {
+               showEditModel('部门');
+           }
+        });
+        // layui 工具条点击事件 - 添加岗位
+        table.on('toolbar(tablePosition)',function (obj) {
+           var layEvent = obj.event;
+           if (layEvent === 'add') {
+               showEditModel('岗位');
+           }
+        });
+
+        // 自定义工具条点击事件  - 部门
+        table.on('tool(tableDepartment)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') { // 修改
+                showEditModel('部门',data);
+            } else if (layEvent === 'del') { // 删除
+                doDel('部门',obj);
+            }
+        });
+        // 自定义工具条点击事件  - 岗位
+        table.on('tool(tablePosition)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') { // 修改
+                showEditModel('岗位',data);
+            } else if (layEvent === 'del') { // 删除
+                doDel('岗位',obj);
+            }
+        });
+
+        // 删除 - 部门& 职位
+        function doDel(categoryCN,obj) {
+            layer.confirm('确定要删除' + categoryCN +'【' + obj.data.name + '】吗？', {
+                skin: 'layui-layer-admin',
+                shade: .1
+            }, function (i) {
+                layer.close(i);
+                layer.load(2);
+                var url;
+                if (categoryCN === '部门'){
+                    url = '/rbac/delete-department';
+                }
+                else if (categoryCN === '岗位') {
+                    url = '/rbac/delete-position';
+                }
+                $.post(url, {
+                    id: obj.data.id
+                }, function (res) {
+                    layer.closeAll('loading');
+                    if (res.status) {
+                        layer.msg(res.msg, {icon: 1});
+                        obj.del();
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
+                    }
+                }, 'json');
+            });
+        }
+
+        // 显示新增+编辑弹窗 - 部门& 职位
+        function showEditModel(categoryCN,mDate) {
+            admin.open({
+                type: 1,
+                title: (mDate ? '修改' : '添加') + categoryCN,
+                content: $('#modelAll').html(),
+                success: function (layero, dIndex) {
+                    var url = '';
+                    var tb = '';
+                    if (categoryCN === '部门'){
+                        url = mDate ? '/rbac/update-department' : '/rbac/create-department';
+                        tb = departmentTb;
+                    } else if (categoryCN === '岗位') {
+                        url = mDate ? '/rbac/update-position' : '/rbac/create-position';
+                        tb = positionTb;
+                    }
+                    console.log(url);
+                    form.val('modelAlltForm', mDate);  // 回显数据
+                    // 表单提交事件
+                    form.on('submit(modelSubmitAll)', function (data) {
+                        layer.load(2);
+                        $.post(url, data.field, function (res) {
+                            layer.closeAll('loading');
+                            if (res.status) {
+                                layer.close(dIndex);
+                                layer.msg(res.msg, {icon: 1});
+                                tb.reload({}, 'data');
+                            } else {
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        }, 'json');
+                        return false;
+                    });
+                }
+            });
+        }
+
+
+
+
+    });
+</script>
+{% endblock %}

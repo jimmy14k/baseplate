@@ -1,17 +1,8 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.views import View
-import json
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from rbac.serializers import *
 from rest_framework.generics import ListAPIView
-from utils.drf.rest_page_set import PageSet
-from rest_framework.filters import OrderingFilter,SearchFilter
-from django_filters.rest_framework import DjangoFilterBackend
-from django_filters.rest_framework import FilterSet
-import django_filters
-from django.db.models import Q
 from rbac.models import Permission
 from rest_framework.pagination import PageNumberPagination
 import logging
@@ -21,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class PermissionListViewSet(ListAPIView):
     class PermPagination(PageNumberPagination):
-        page_size = 100
+        page_size = 10000
         max_page_size = 100
     queryset = Permission.objects.all().order_by('order_number')
     serializer_class = PermissionModelSerializer

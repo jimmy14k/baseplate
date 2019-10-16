@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django_redis import get_redis_connection
 
 class Department(models.Model):
-    name = models.CharField(max_length=128, verbose_name='部门名称')
+    name = models.CharField(max_length=128, verbose_name='部门名称',unique=True)
     class Meta:
         db_table = 'department'
         verbose_name = "部门表"
@@ -11,7 +11,7 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 class Position(models.Model):
-    name = models.CharField(max_length=128, verbose_name='职位名称')
+    name = models.CharField(max_length=128, verbose_name='职位名称',unique=True)
     class Meta:
         db_table = 'position'
         verbose_name = "职位表"
@@ -30,7 +30,7 @@ class Permission(models.Model):
         (2,'接口'),
     )
     title = models.CharField(max_length=32,verbose_name='权限名称')
-    url = models.CharField(max_length=128,verbose_name='URL',blank=True,null=True)
+    url = models.CharField(max_length=128,verbose_name='URL',blank=True,null=True,unique=True)
     parent_id = models.IntegerField(verbose_name='上级菜单ID',blank=True,null=True,default=-1)
     per_type = models.IntegerField(choices=TYPE_CHOICES,verbose_name='权限类型')
     authority = models.CharField(verbose_name='权限标识',max_length=64,blank=True,null=True)
@@ -57,7 +57,7 @@ class Role(models.Model):
     '''
     角色
     '''
-    title = models.CharField(max_length=32,verbose_name='角色名称')
+    title = models.CharField(max_length=32,verbose_name='角色名称',unique=True)
     comment = models.TextField(verbose_name='备注',blank=True,null=True)
     permissions = models.ManyToManyField(Permission,verbose_name='角色权限',blank=True,related_name='role_permissions')
     c_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='创建时间', blank=True)
