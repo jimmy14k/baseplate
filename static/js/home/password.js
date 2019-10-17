@@ -10,7 +10,7 @@
             form.on('submit(submit-psw)', function (data) {
                 $.ajax({
                     type: "POST",
-                    url: '/password',
+                    url: '/home/password',
                     data: data.field,
                     success: function (d) {
                         var d = JSON.parse(d);
