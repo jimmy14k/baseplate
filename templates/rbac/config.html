@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}基础配置{% endblock %}
+{% block header-css %}
+{% endblock %}
+
+{% block page-content %}
+    {% csrf_token %}
+    <!-- 加载动画 -->
+    <div class="page-loading">
+        <div class="ball-loader">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">部门信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table" id="tableDepartment" lay-filter="tableDepartment"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">岗位信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table" id="tablePosition" lay-filter="tablePosition"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">开发语言</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table" id="tableDevLang" lay-filter="tableDevLang"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 表单弹窗 -->
+<script type="text/html" id="modelAll">
+    <form id="modelAlltForm" lay-filter="modelAlltForm" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input name="name" placeholder="请输入名称" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item text-right">
+            <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
+            <button class="layui-btn" lay-filter="modelSubmitAll" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+
+{% endblock %}
+
+{% block footer-js %}
+<script type="text/javascript" src="/static/js/rbac/config.js?v=101"></script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from rbac.models import User,Permission,Role,Department,Position
+from rbac.models import User,Permission,Role,Department,Position,DevLanguage
 from rest_framework import serializers
 
 
@@ -13,6 +13,10 @@ class DepartmentModelSerializer(serializers.ModelSerializer):
 class PositionModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
+        fields = ("id","name")
+class DevLangModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DevLanguage
         fields = ("id","name")
 
 class UserModelSerializer(serializers.ModelSerializer):

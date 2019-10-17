@@ -2,7 +2,7 @@ from django.urls import path
 from .views.user_views import *
 from .views.permission_views import *
 from .views.role_views import *
-from .views.others_views import *
+from .views.config_views import *
 
 app_name = "assets"
 
@@ -33,7 +33,7 @@ urlpatterns = [
 
 
 
-    path('others',OthersPage.as_view(),name='others'),                                    #基础配置页面
+    path('config',ConfigPage.as_view(),name='config'),                                    #基础配置页面
 
     path('departments',DepartmentListViewSet.as_view(),name='departments'),               #部门信息接口
     path('create-department', CreateDepartment.as_view(), name='create-department'),      #创建部门
@@ -44,4 +44,9 @@ urlpatterns = [
     path('create-position', CreatePosition.as_view(), name='create-position'),            # 创建岗位
     path('update-position', UpdatePosition.as_view(), name='update-position'),            # 更新岗位
     path('delete-position', DeletePosition.as_view(), name='delete-position'),            # 删除岗位
+
+    path('langs', DevLangViewSet.as_view(), name='langs'),                                # 岗位信息接口
+    path('create-lang', CreateDevLang.as_view(), name='create-lang'),                     # 创建岗位
+    path('update-lang', UpdateDevLang.as_view(), name='update-lang'),                     # 更新岗位
+    path('delete-lang', DeleteDevLang.as_view(), name='delete-lang'),                     # 删除岗位
 ]

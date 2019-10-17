@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_redis import get_redis_connection
 
+class DevLanguage(models.Model):
+    name = models.CharField(max_length=128, verbose_name='开发语言',unique=True)
+    class Meta:
+        db_table = 'dev_language'
+        verbose_name = "开发语言表"
+        verbose_name_plural = verbose_name
+    def __str__(self):
+        return self.name
+
 class Department(models.Model):
     name = models.CharField(max_length=128, verbose_name='部门名称',unique=True)
     class Meta:
