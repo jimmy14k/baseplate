@@ -20,7 +20,8 @@ class PermissionListViewSet(ListAPIView):
 
 class PermissionList(View):
     def get(self,request):
-        return render(request, 'rbac/permissions.html')
+        authoritys = request.session.get('permissions_authoritys')
+        return render(request, 'rbac/permissions.html',{"authoritys":authoritys})
 
 
 

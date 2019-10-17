@@ -37,7 +37,8 @@ class RoleListViewSet(ListAPIView):
 
 class RoleList(View):
     def get(self,request):
-        return render(request, 'rbac/roles.html')
+        authoritys = request.session.get('permissions_authoritys')
+        return render(request, 'rbac/roles.html',{"authoritys":authoritys})
 
 class CreateRole(View):
     def post(self,request):

@@ -30,7 +30,9 @@
                     <div class="layui-inline">
                         <button id="btnSearchAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
                         </button>
+                        {% if 'permission:create' in authoritys %}
                         <button id="btnAddAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                        {% endif %}
                         <button id="btnExpandAuth" class="layui-btn icon-btn">全部展开</button>
                     </div>
                     <div class="layui-inline">
@@ -46,8 +48,12 @@
 
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBarAuth">
+    {% if 'permission:update' in authoritys %}
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    {% endif %}
+    {% if 'permission:delete' in authoritys %}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {% endif %}
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelAuth">

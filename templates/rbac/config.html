@@ -45,8 +45,12 @@
 
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBar">
+    {% if 'config:update' in authoritys %}
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    {% endif %}
+    {% if 'config:delete' in authoritys %}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {% endif %}
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelAll">

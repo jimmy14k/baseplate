@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 class ConfigPage(View):
     def get(self,request):
-        return render(request, 'rbac/config.html')
+        authoritys = request.session.get('permissions_authoritys')
+        return render(request, 'rbac/config.html',{"authoritys":authoritys})
 
 # 部门信息
 class DepartmentListViewSet(ListAPIView):
