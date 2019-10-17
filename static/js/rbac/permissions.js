@@ -24,7 +24,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'treetable'], function () {
                     {field: 'order_number', title: '排序号', align: 'center'},
                     {
                         title: '类型', templet: function (d) {
-                            var strs = ['<span class="layui-badge-rim">菜单</span>', '<span class="layui-badge layui-bg-gray">按钮</span>','<span class="layui-badge layui-bg-gray">接口</span>'];
+                            var strs = ['<span class="layui-badge-rim" style="color: #ff66a5">菜单</span>', '<span class="layui-badge-rim" style="color: #00A65A">按钮</span>','<span class="layui-badge layui-bg-gray">接口</span>'];
                             return strs[d.per_type];
                         }, align: 'center'
                     },
