@@ -8,3 +8,4 @@ django-celery-beat==1.5.0
 
 django-filter==2.2.0
 
+pyDes==2.0.1
