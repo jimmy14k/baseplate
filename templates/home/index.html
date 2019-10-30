@@ -65,16 +65,18 @@
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree arrow2" lay-filter="admin-side-nav" lay-accordion="true"
                 style="margin-top: 15px;">
-                <li class="layui-nav-item">
+
                     {% for item in res %}
-                        <a><i class="{{ item.menu_icon }}"></i>&emsp;<cite>{{ item.name }}</cite></a>
-                        <dl class="layui-nav-child">
-                            {% for row in item.subMenu %}
-                                <dd><a lay-href="{{ row.url }}">{{ row.name }}</a></dd>
-                            {% endfor %}
-                        </dl>
+                        <li class="layui-nav-item">
+                            <a><i class="{{ item.menu_icon }}"></i>&emsp;<cite>{{ item.name }}</cite></a>
+                            <dl class="layui-nav-child">
+                                {% for row in item.subMenu %}
+                                    <dd><a lay-href="{{ row.url }}">{{ row.name }}</a></dd>
+                                {% endfor %}
+                            </dl>
+                        </li>
                     {% endfor %}
-                </li>
+
 
             </ul>
         </div>
