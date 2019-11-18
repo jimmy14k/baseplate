@@ -3,10 +3,7 @@ from pyDes import *
 
 
 '''
-name=丁忠典&type=host&q=mongodb-15 ====>>> Oc6ZUK64rgaqoPAX7sGXmvFQElwQlAFfGHtvp1fqmQCQJ5q+cqHIgw==
-name=朱维霞&type=host&q=mongodb-16 ====>>> GP1lo2hhnQZM2i5VKhndXmS1ntperBcfVUuViX4iMsHVIHLQ/OfMZw==
 name=叶海涛&type=test&q=aaa ====>>> urgveus2G59mj2kRPnfwiGX6L+HdmK9JjKJ7AX/3Pek=
-方健-腾赋dsadyasunlsadsaadasdsad阿宝的输入法 ====>>> FSCFy/VisByaL4GcykH8bmVOHSZGYtf0tqYpAhVSg0o8g26Z4iK8NMsGAiRlXPuAANXClITpRZc=
 '''
 
 KEY = '12345678'
