@@ -10,4 +10,4 @@ django-filter==2.2.0
 
 pyDes==2.0.1
 
-djangorestframework==3.10.3
+djangorestframework==3.11.2
