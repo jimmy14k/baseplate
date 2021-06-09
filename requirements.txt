@@ -1,4 +1,4 @@
-Django==2.2.8
+Django==2.2.22
 django-redis==4.10.0
 mysqlclient==1.4.4
 
