@@ -3,7 +3,7 @@ django-redis==4.10.0
 mysqlclient==1.4.4
 
 celery==4.3.0
-django-celery-results==1.1.2
+django-celery-results==2.4.0
 django-celery-beat==1.5.0
 
 django-filter==2.2.0
